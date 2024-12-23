@@ -1,0 +1,1 @@
+This project creates a countdown timer on the second monitor of a Linux computer (developed and tested on Ubuntu) to show the remaining hours, minutes, and seconds until a scheduled event.  It is being used for title overlays in a live video production/streaming environment.  Just a work in progress at this point.
