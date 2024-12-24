@@ -6,6 +6,31 @@ import time
 from datetime import datetime
 eventstart = datetime.strptime('2024-12-24 12:00:00', '%Y-%m-%d %H:%M:%S')
 
+starttimes = [
+    datetime.strptime('2024-12-23 22:00:00', '%Y-%m-%d %H:%M:%S'),
+    datetime.strptime('2024-12-23 22:10:00', '%Y-%m-%d %H:%M:%S'),
+    datetime.strptime('2024-12-23 22:20:00', '%Y-%m-%d %H:%M:%S'),
+    datetime.strptime('2024-12-23 22:30:00', '%Y-%m-%d %H:%M:%S'),
+    datetime.strptime('2024-12-23 22:40:00', '%Y-%m-%d %H:%M:%S'),
+]
+
+durations = [ # minutes to count down before each start time, one per starttime
+    5,
+    5,
+    5,
+    5,
+    5,
+]
+
+timeranges = []
+
+for index, starttime in enumerate(starttimes):
+    endcountdown = starttime.timestamp()
+    startcountdown = endcountdown - (durations[index] * 60)
+    timeranges.append({'start': startcountdown, 'end': endcountdown})
+
+print(timeranges)
+
 #fullwidth = 0
 xposition = 3520
 yposition = 950
@@ -54,8 +79,8 @@ root.attributes('-topmost',True)
 root.overrideredirect(True)
 #root.withdraw()
 root.wait_visibility(root)
-fullwidth = root.winfo_width()
-print("fullwidth: ", fullwidth)
+#fullwidth = root.winfo_width()
+#print("fullwidth: ", fullwidth)
 #root.wm_attributes('-alpha',0.3)
 root.title("Countdown Timer")
 
