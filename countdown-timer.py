@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 # Install TKinter on Ubuntu
 # sudo apt install python3-tk
 
