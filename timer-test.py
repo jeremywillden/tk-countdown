@@ -4,37 +4,57 @@
 import tkinter as tk
 import time
 
+#fullwidth = 0
+xposition = 3520
+yposition = 950
+xoffsetfortwonumbers = 80
+
 def countdown(count):
+#    global fullwidth
     hours, rem = divmod(count, 3600)
     mins, secs = divmod(rem, 60)
+    if count < 1:
+        root.withdraw()
+        # to restore the window
+        # root.deiconify()
+        # root.destroy() to end the program
+        return
+
     if hours < 1:
         time_str = f"{mins:02}:{secs:02}"
+#        newwidth = root.winfo_width()
+#        print("newwidth: ", newwidth)
+#        root.geometry("+"+str(3500+(fullwidth-newwidth))+"+950")
+        root.geometry("+"+str(xposition+xoffsetfortwonumbers)+"+"+str(yposition))
+        time_label.config(text=time_str)
     else:
         time_str = f"{hours:02}:{mins:02}:{secs:02}"
-    time_label.config(text=time_str)
+        time_label.config(text=time_str)
 
     if count > 0:
         root.after(1000, countdown, count - 1)
     else:
-        time_label.config(text="Time's up!")
+        time_label.config(text="")
 
 def start_countdown():
     try:
-        count = int(entry.get())
+        count = 5
         countdown(count)
     except ValueError:
-        time_label.config(text="Invalid input")
+        time_label.config(text="")
 
 root = tk.Tk()
-root.geometry("+3500+950")
+root.geometry("+"+str(xposition)+"+"+str(yposition))
 root.attributes('-topmost',True)
 root.overrideredirect(True)
 #root.withdraw()
-#root.wait_visibility(root)
+root.wait_visibility(root)
+fullwidth = root.winfo_width()
+print("fullwidth: ", fullwidth)
 #root.wm_attributes('-alpha',0.3)
 root.title("Countdown Timer")
 
-time_label = tk.Label(root, text="00:00:00", font=("Arial", 48), fg="#E0E0E0", bg="#020202")
+time_label = tk.Label(root, text="00:00:00", font=("Arial", 48), fg="#E0E0E0", bg="#020202",anchor="e", justify='right')
 time_label.pack()
-
+start_countdown()
 root.mainloop()
