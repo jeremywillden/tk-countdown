@@ -3,6 +3,8 @@
 
 import tkinter as tk
 import time
+from datetime import datetime
+eventstart = datetime.strptime('2024-12-24 12:00:00', '%Y-%m-%d %H:%M:%S')
 
 #fullwidth = 0
 xposition = 3520
@@ -38,7 +40,10 @@ def countdown(count):
 
 def start_countdown():
     try:
-        count = 5
+        nowtime = datetime.now()
+        timeuntil = eventstart - nowtime
+        secondsuntil = timeuntil.days * 24 * 3600 + timeuntil.seconds
+        count = secondsuntil
         countdown(count)
     except ValueError:
         time_label.config(text="")
