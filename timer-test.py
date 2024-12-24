@@ -13,7 +13,7 @@ def countdown(count):
 #    global fullwidth
     hours, rem = divmod(count, 3600)
     mins, secs = divmod(rem, 60)
-    if count < 1:
+    if count < 0:
         root.withdraw()
         # to restore the window
         # root.deiconify()
@@ -31,7 +31,7 @@ def countdown(count):
         time_str = f"{hours:02}:{mins:02}:{secs:02}"
         time_label.config(text=time_str)
 
-    if count > 0:
+    if count >= 0:
         root.after(1000, countdown, count - 1)
     else:
         time_label.config(text="")
