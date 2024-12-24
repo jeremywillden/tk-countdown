@@ -7,29 +7,30 @@ from datetime import datetime
 eventstart = datetime.strptime('2024-12-24 12:00:00', '%Y-%m-%d %H:%M:%S')
 
 starttimes = [
-    datetime.strptime('2024-12-23 22:03:00', '%Y-%m-%d %H:%M:%S'),
-    datetime.strptime('2024-12-23 22:13:00', '%Y-%m-%d %H:%M:%S'),
-    datetime.strptime('2024-12-23 22:23:00', '%Y-%m-%d %H:%M:%S'),
-    datetime.strptime('2024-12-23 22:33:00', '%Y-%m-%d %H:%M:%S'),
-    datetime.strptime('2024-12-23 22:43:00', '%Y-%m-%d %H:%M:%S'),
+    datetime.strptime('2025-01-25 08:00:00', '%Y-%m-%d %H:%M:%S'),
+    datetime.strptime('2025-01-25 16:00:00', '%Y-%m-%d %H:%M:%S'),
+    datetime.strptime('2025-01-25 18:00:00', '%Y-%m-%d %H:%M:%S'),
+    datetime.strptime('2025-01-26 10:00:00', '%Y-%m-%d %H:%M:%S'),
 ]
 
 durations = [ # minutes to count down before each start time, one per starttime
-    9,
-    9,
-    9,
-    9,
-    9,
+    120,
+    120,
+    30,
+    120,
 ]
 
 timeranges = []
+finaltime = datetime.now().timestamp()
 
 for index, starttime in enumerate(starttimes):
     endcountdown = starttime.timestamp()
     startcountdown = endcountdown - (durations[index] * 60)
     timeranges.append({'start': startcountdown, 'end': endcountdown})
+    if finaltime < endcountdown:
+        finaltime = endcountdown
 
-print(timeranges)
+#print(timeranges)
 
 def getcurrentcountdown():
     nowtime = datetime.now().timestamp()
@@ -48,10 +49,9 @@ def countdown():
     mins, secs = divmod(rem, 60)
     if count < 0:
         root.withdraw()
-        # to restore the window
-        # root.deiconify()
+    else:
+        root.deiconify()
         # root.destroy() to end the program
-        return
 
     if hours < 1:
         time_str = f"{mins:02}:{secs:02}"
@@ -61,10 +61,12 @@ def countdown():
         time_str = f"{hours:02}:{mins:02}:{secs:02}"
         time_label.config(text=time_str)
 
-    if count >= 0:
-        root.after(250, countdown)
+    if finaltime < datetime.now().timestamp():
+        print("Final Event Countdown is complete at ", datetime.now())
+        root.destroy()
+        exit()
     else:
-        time_label.config(text="")
+        root.after(250, countdown)
 
 root = tk.Tk()
 root.geometry("+"+str(xposition)+"+"+str(yposition))
