@@ -62,7 +62,7 @@ def countdown():
         time_label.config(text=time_str)
 
     if count >= 0:
-        root.after(1000, countdown)
+        root.after(250, countdown)
     else:
         time_label.config(text="")
 
