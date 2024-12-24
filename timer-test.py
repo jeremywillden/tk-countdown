@@ -7,19 +7,19 @@ from datetime import datetime
 eventstart = datetime.strptime('2024-12-24 12:00:00', '%Y-%m-%d %H:%M:%S')
 
 starttimes = [
-    datetime.strptime('2024-12-23 22:00:00', '%Y-%m-%d %H:%M:%S'),
-    datetime.strptime('2024-12-23 22:10:00', '%Y-%m-%d %H:%M:%S'),
-    datetime.strptime('2024-12-23 22:20:00', '%Y-%m-%d %H:%M:%S'),
-    datetime.strptime('2024-12-23 22:30:00', '%Y-%m-%d %H:%M:%S'),
-    datetime.strptime('2024-12-23 22:40:00', '%Y-%m-%d %H:%M:%S'),
+    datetime.strptime('2024-12-23 22:03:00', '%Y-%m-%d %H:%M:%S'),
+    datetime.strptime('2024-12-23 22:13:00', '%Y-%m-%d %H:%M:%S'),
+    datetime.strptime('2024-12-23 22:23:00', '%Y-%m-%d %H:%M:%S'),
+    datetime.strptime('2024-12-23 22:33:00', '%Y-%m-%d %H:%M:%S'),
+    datetime.strptime('2024-12-23 22:43:00', '%Y-%m-%d %H:%M:%S'),
 ]
 
 durations = [ # minutes to count down before each start time, one per starttime
-    5,
-    5,
-    5,
-    5,
-    5,
+    9,
+    9,
+    9,
+    9,
+    9,
 ]
 
 timeranges = []
@@ -31,13 +31,19 @@ for index, starttime in enumerate(starttimes):
 
 print(timeranges)
 
-#fullwidth = 0
+def getcurrentcountdown():
+    nowtime = datetime.now().timestamp()
+    for timerange in timeranges:
+        if nowtime > timerange['start'] and nowtime < timerange['end']:
+            return timerange['end'] - nowtime
+    return -1
+
 xposition = 3520
 yposition = 950
 xoffsetfortwonumbers = 80
 
-def countdown(count):
-#    global fullwidth
+def countdown():
+    count = int(getcurrentcountdown())
     hours, rem = divmod(count, 3600)
     mins, secs = divmod(rem, 60)
     if count < 0:
@@ -49,9 +55,6 @@ def countdown(count):
 
     if hours < 1:
         time_str = f"{mins:02}:{secs:02}"
-#        newwidth = root.winfo_width()
-#        print("newwidth: ", newwidth)
-#        root.geometry("+"+str(3500+(fullwidth-newwidth))+"+950")
         root.geometry("+"+str(xposition+xoffsetfortwonumbers)+"+"+str(yposition))
         time_label.config(text=time_str)
     else:
@@ -59,32 +62,18 @@ def countdown(count):
         time_label.config(text=time_str)
 
     if count >= 0:
-        root.after(1000, countdown, count - 1)
+        root.after(1000, countdown)
     else:
-        time_label.config(text="")
-
-def start_countdown():
-    try:
-        nowtime = datetime.now()
-        timeuntil = eventstart - nowtime
-        secondsuntil = timeuntil.days * 24 * 3600 + timeuntil.seconds
-        count = secondsuntil
-        countdown(count)
-    except ValueError:
         time_label.config(text="")
 
 root = tk.Tk()
 root.geometry("+"+str(xposition)+"+"+str(yposition))
 root.attributes('-topmost',True)
 root.overrideredirect(True)
-#root.withdraw()
 root.wait_visibility(root)
-#fullwidth = root.winfo_width()
-#print("fullwidth: ", fullwidth)
-#root.wm_attributes('-alpha',0.3)
 root.title("Countdown Timer")
 
 time_label = tk.Label(root, text="00:00:00", font=("Arial", 48), fg="#E0E0E0", bg="#020202",anchor="e", justify='right')
 time_label.pack()
-start_countdown()
+countdown()
 root.mainloop()
