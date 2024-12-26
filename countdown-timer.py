@@ -41,9 +41,9 @@ def getcurrentcountdown():
             return timerange['end'] - nowtime
     return -1
 
-xposition = 3520
+xposition = 3480
 yposition = 950
-xoffsetfortwonumbers = 80
+xoffsetfortwonumbers = 115
 
 def countdown():
     count = int(getcurrentcountdown())
@@ -76,8 +76,8 @@ root.attributes('-topmost',True)
 root.overrideredirect(True)
 root.wait_visibility(root)
 root.title("Countdown Timer")
-
-time_label = tk.Label(root, text="00:00:00", font=("Arial", 48), fg="#E0E0E0", bg="#020202",anchor="e", justify='right')
+# "Ubuntu Mono" also works well with xposition = 3500
+time_label = tk.Label(root, text="00:00:00", font=("Noto Sans Mono", 48), fg="#E0E0E0", bg="#020202",anchor="e", justify='right')
 time_label.pack()
 countdown()
 root.mainloop()
